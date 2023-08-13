@@ -4,7 +4,8 @@ I have created a Flask web app that could be used by business owners to check th
 their customer reviews into the textbox on the web app and then generate a pie chart that would display their reviews are positive,
 negative, and neutral. Additionally, they could also generate a word cloud of the reviews to get an idea of what their customers think.
 
-The reviews are processed and classified based on NLP(Natural language processing) which is a sector in AI(Artificial intelligence). 
+The reviews are processed and classified based on NLP(Natural language processing) which is a sector in AI(Artificial intelligence).
+This app could simply be run on Visual Studio Code! (because it is a Flask web app which is supported by VS Code)
 
 Resources and References:
 I have used the following resources and references while making this personal project:
