@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <title>Customer Satisfaction Check</title>
+
+</head>
+<body>
+  <h1 class="heading" style="font-family: 'Open Sans', sans-serif;">Customer Satisfaction Check</h1>
+  <div class="container">
+    <!-- Box for entering reviews -->
+    <div class="box">
+      <h3>Enter your reviews with a one-line space between each review:</h3>
+      <textarea id="reviewsTextarea" rows="12" cols="40"></textarea>
+      <button id="submitBtn">Submit</button>
+    </div>
+    <!-- Box for displaying reviews -->
+    <div class="box">
+      <h3>Reviews:</h3>
+      <ul id="reviewsList"></ul>
+    </div>
+    <!-- Box for calculating satisfaction n displaying pie chart -->
+    <div class="box">
+      <h3>Are the customers satisfied?</h3>
+      <button id="calculateBtn">Calculate</button>
+      <canvas id="satisfactionChart" width="400" height="400"></canvas>
+    </div>
+    <!-- Box for displaying wordCloud -->
+    <div class="box">
+      <h3>Word Cloud</h3>
+      <button id="generateWordCloudBtn">Generate Word Cloud</button>
+      <img id="wordCloudImage" src="" alt="Word Cloud" style="max-width: 100%;">
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script>
+    // event listener to the "Generate Word Cloud" button
+    const generateWordCloudBtn = document.getElementById('generateWordCloudBtn');
+    generateWordCloudBtn.addEventListener('click', () => {
+      // get reviews from textarea
+      const reviewsTextarea = document.getElementById('reviewsTextarea');
+      const reviewsText = reviewsTextarea.value;
+
+      // request to generate the wordCloud
+      fetch('/generate_wordcloud', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ reviews: reviewsText })
+      })
+        .then(response => response.json())
+        .then(data => {
+          // display generated wordCloud image
+          const wordCloudImage = document.getElementById('wordCloudImage');
+          wordCloudImage.src = `data:image/png;base64, ${data.wordcloud_base64}`;
+        })
+        .catch(error => {
+          console.error('Error generating word cloud:', error);
+        });
+    });
+  </script>
+</body>
+</html>
